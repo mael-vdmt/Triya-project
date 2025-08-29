@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./docker/backend
+      dockerfile: Dockerfile
+    container_name: triya_backend
+    volumes:
+      - ./backend:/var/www/backend
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_DATABASE=triya
+      - DB_USERNAME=triya
+      - DB_PASSWORD=triya
+    networks:
+      - triya_net
+
+  frontend:
+    build:
+      context: ./docker/frontend
+      dockerfile: Dockerfile
+    container_name: triya_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - triya_net
+
+  db:
+    image: mysql:8.0
+    container_name: triya_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: triya
+      MYSQL_USER: triya
+      MYSQL_PASSWORD: triya
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - triya_mysql_data:/var/lib/mysql
+    networks:
+      - triya_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: triya_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: triya
+      PMA_PASSWORD: triya
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    networks:
+      - triya_net
+
+volumes:
+  triya_mysql_data:
+
+networks:
+  triya_net:
+    driver: bridge
