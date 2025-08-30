@@ -4,7 +4,7 @@ import { useAuthStore } from '../store';
 const routes = [
   {
     path: '/',
-    redirect: '/profile',
+    redirect: '/dashboard',
   },
   {
     path: '/login',
@@ -19,14 +19,14 @@ const routes = [
     meta: { requiresGuest: true },
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: () => import('../pages/profile/Profile.vue'),
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('../pages/dashboard/Dashboard.vue'),
     meta: { requiresAuth: true },
   },
   {
-    path: '/app',
-    name: 'App',
+    path: '/profile',
+    name: 'Profile',
     component: () => import('../pages/profile/Profile.vue'),
     meta: { requiresAuth: true },
   },

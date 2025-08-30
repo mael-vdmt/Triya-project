@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-primary-50 to-blue-50">
-    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+  <AuthenticatedLayout>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <h1 class="text-4xl font-bold text-gray-900 mb-4">Bon retour !</h1>
         <p class="text-xl text-gray-600">Voici vos informations de profil</p>
@@ -76,13 +76,14 @@
         </div>
       </div>
     </div>
-  </div>
+  </AuthenticatedLayout>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from '../../store';
 import UiCard from '../../components/ui/UiCard.vue';
 import UiButton from '../../components/ui/UiButton.vue';
+import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
 
 const authStore = useAuthStore();
 
