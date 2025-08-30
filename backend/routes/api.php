@@ -6,6 +6,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Test route
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working!']);
+});
+
 // CSRF cookie route for SPA
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['message' => 'CSRF cookie set']);

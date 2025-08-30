@@ -2,8 +2,8 @@
   <div class="min-h-screen bg-gradient-to-br from-primary-50 to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Create account</h1>
-        <p class="text-gray-600">Join us today</p>
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Créer un compte</h1>
+        <p class="text-gray-600">Rejoignez-nous aujourd'hui</p>
       </div>
 
       <UiCard>
@@ -20,36 +20,36 @@
 
           <UiInput
             v-model="form.name"
-            label="Full name"
+            label="Nom complet"
             type="text"
-            placeholder="Enter your full name"
+            placeholder="Entrez votre nom complet"
             required
             :error="errors.name"
           />
 
           <UiInput
             v-model="form.email"
-            label="Email address"
+            label="Adresse email"
             type="email"
-            placeholder="Enter your email"
+            placeholder="Entrez votre email"
             required
             :error="errors.email"
           />
 
           <UiInput
             v-model="form.password"
-            label="Password"
+            label="Mot de passe"
             type="password"
-            placeholder="Create a password"
+            placeholder="Créez un mot de passe"
             required
             :error="errors.password"
           />
 
           <UiInput
             v-model="form.password_confirmation"
-            label="Confirm password"
+            label="Confirmer le mot de passe"
             type="password"
-            placeholder="Confirm your password"
+            placeholder="Confirmez votre mot de passe"
             required
             :error="errors.password_confirmation"
           />
@@ -57,21 +57,21 @@
           <UiButton
             type="submit"
             :loading="authStore.loading"
-            loading-text="Creating account..."
+            loading-text="Création du compte..."
             class="w-full"
           >
-            Create account
+            Créer le compte
           </UiButton>
         </form>
 
         <div class="mt-6 text-center">
           <p class="text-sm text-gray-600">
-            Already have an account?
+            Vous avez déjà un compte ?
             <router-link
               to="/login"
               class="font-medium text-primary-600 hover:text-primary-500 transition-colors"
             >
-              Sign in
+              Se connecter
             </router-link>
           </p>
         </div>
@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useAuthStore } from '../../app/store';
+import { useAuthStore } from '../../store';
 import UiCard from '../../components/ui/UiCard.vue';
 import UiInput from '../../components/ui/UiInput.vue';
 import UiButton from '../../components/ui/UiButton.vue';
@@ -104,16 +104,16 @@ const handleRegister = async () => {
   
   // Basic validation
   if (!form.name) {
-    errors.value.name = 'Name is required';
+    errors.value.name = 'Le nom est requis';
   }
   if (!form.email) {
-    errors.value.email = 'Email is required';
+    errors.value.email = 'L\'email est requis';
   }
   if (!form.password) {
-    errors.value.password = 'Password is required';
+    errors.value.password = 'Le mot de passe est requis';
   }
   if (form.password !== form.password_confirmation) {
-    errors.value.password_confirmation = 'Passwords do not match';
+    errors.value.password_confirmation = 'Les mots de passe ne correspondent pas';
   }
   
   if (Object.keys(errors.value).length > 0) {

@@ -6,6 +6,7 @@ services:
       context: ./docker/backend
       dockerfile: Dockerfile
     container_name: triya_backend
+    working_dir: /var/www/backend
     volumes:
       - ./backend:/var/www/backend
     ports:
@@ -22,8 +23,8 @@ services:
 
   frontend:
     build:
-      context: ./docker/frontend
-      dockerfile: Dockerfile
+      context: ./frontend
+      dockerfile: ../docker/frontend/Dockerfile
     container_name: triya_frontend
     volumes:
       - ./frontend:/app

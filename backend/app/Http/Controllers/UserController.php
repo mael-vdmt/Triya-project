@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function user(): JsonResponse
+    public function user(Request $request): JsonResponse
     {
         return response()->json([
-            'user' => new UserResource(Auth::user())
+            'user' => new UserResource($request->user())
         ]);
     }
 }

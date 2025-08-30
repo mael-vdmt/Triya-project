@@ -3,6 +3,9 @@
 .env.local
 .env.*.local
 
+# Cookies and session files
+cookies.txt
+
 # Backend
 backend/vendor/
 backend/node_modules/

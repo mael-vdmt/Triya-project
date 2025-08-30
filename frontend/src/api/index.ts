@@ -2,19 +2,17 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://localhost:8080',
-  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
 });
 
-// Request interceptor to handle CSRF token
-api.interceptors.request.use(async (config) => {
-  if (config.method !== 'get') {
-    await axios.get('http://localhost:8080/sanctum/csrf-cookie', {
-      withCredentials: true,
-    });
+// Request interceptor to add auth token
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
@@ -24,8 +22,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Redirect to login if unauthorized
-      window.location.href = '/login';
+      // Don't redirect automatically, let the components handle it
+      console.log('Unauthorized request - user needs to login');
+      
+      // Clear any stored user data if we get a 401
+      if (error.config.url === '/api/user') {
+        // This is a user fetch request, clear the user
+        localStorage.removeItem('user');
+        localStorage.removeItem('auth_token');
+      }
     }
     return Promise.reject(error);
   }

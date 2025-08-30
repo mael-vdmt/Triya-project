@@ -43,10 +43,6 @@ withDefaults(defineProps<Props>(), {
   id: undefined,
 });
 
-defineEmits<{
-  'update:modelValue': [value: string];
-}>();
-
 const emit = defineEmits<{
   'update:modelValue': [value: string];
 }>();

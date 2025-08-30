@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useAuthStore } from './app/store';
-import router from './app/router';
+import { onMounted, ref } from 'vue';
+import { useAuthStore } from './store';
 
 const authStore = useAuthStore();
+const isInitializing = ref(false);
 
 onMounted(async () => {
-  await authStore.initializeAuth();
+  // Initialize auth only once when app starts
+  if (!authStore.isInitialized && !isInitializing.value) {
+    isInitializing.value = true;
+    try {
+      await authStore.initializeAuth();
+    } catch (error) {
+      console.error('Failed to initialize auth on mount:', error);
+    } finally {
+      isInitializing.value = false;
+    }
+  }
 });
 </script>
 

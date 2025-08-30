@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { authApi, type User, type LoginData, type RegisterData } from '@/api/auth';
+import { authApi, type User, type LoginData, type RegisterData } from '../api/auth';
 import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const isInitialized = ref(false);
   const router = useRouter();
 
   const isAuthenticated = computed(() => !!user.value);
@@ -31,10 +32,16 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authApi.login(credentials);
       setUser(response.user);
       
+      // Store the token
+      if (response.token) {
+        localStorage.setItem('auth_token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }
+      
       await router.push('/profile');
       return response;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Login failed';
+      const errorMessage = err.response?.data?.message || 'Échec de la connexion';
       setError(errorMessage);
       throw err;
     } finally {
@@ -50,10 +57,16 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authApi.register(userData);
       setUser(response.user);
       
+      // Store the token
+      if (response.token) {
+        localStorage.setItem('auth_token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+      }
+      
       await router.push('/profile');
       return response;
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Registration failed';
+      const errorMessage = err.response?.data?.message || 'Échec de l\'inscription';
       setError(errorMessage);
       throw err;
     } finally {
@@ -64,10 +77,14 @@ export const useAuthStore = defineStore('auth', () => {
   const logout = async () => {
     try {
       await authApi.logout();
-      setUser(null);
-      await router.push('/login');
     } catch (err) {
       console.error('Logout error:', err);
+    } finally {
+      // Clear local data regardless of API response
+      setUser(null);
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+      await router.push('/login');
     }
   };
 
@@ -83,10 +100,37 @@ export const useAuthStore = defineStore('auth', () => {
   };
 
   const initializeAuth = async () => {
+    // Prevent multiple initializations
+    if (isInitialized.value || loading.value) {
+      return;
+    }
+
     try {
-      await fetchUser();
+      loading.value = true;
+      isInitialized.value = true;
+      
+      // Check if we have a stored token and user
+      const token = localStorage.getItem('auth_token');
+      const storedUser = localStorage.getItem('user');
+      
+      if (token && storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          setUser(userData);
+          // Verify the token is still valid by fetching user data
+          await fetchUser();
+        } catch (err) {
+          // Token is invalid, clear stored data
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user');
+          setUser(null);
+        }
+      }
     } catch (err) {
-      // User is not authenticated
+      // User is not authenticated, this is normal
+      console.log('User not authenticated');
+    } finally {
+      loading.value = false;
     }
   };
 
