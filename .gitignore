@@ -17,6 +17,9 @@ backend/storage/framework/views/*
 backend/bootstrap/cache/*
 backend/.phpunit.result.cache
 
+# Laravel storage .gitignore files (auto-generated)
+backend/storage/**/.gitignore
+
 # Frontend
 frontend/node_modules/
 frontend/dist/
