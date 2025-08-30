@@ -9,15 +9,14 @@ cookies.txt
 # Backend
 backend/vendor/
 backend/node_modules/
-backend/storage/*.key
-backend/storage/logs/*
-backend/storage/framework/cache/*
-backend/storage/framework/sessions/*
-backend/storage/framework/views/*
+backend/storage/
 backend/bootstrap/cache/*
 backend/.phpunit.result.cache
 
 # Laravel storage .gitignore files (auto-generated)
+backend/storage/**/.gitignore
+
+# Ignore all .gitignore files in storage (Laravel auto-generates them)
 backend/storage/**/.gitignore
 
 # Frontend
