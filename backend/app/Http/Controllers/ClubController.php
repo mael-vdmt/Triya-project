@@ -16,7 +16,7 @@ class ClubController extends Controller
     ) {}
 
     /**
-     * Display a listing of the resource.
+     * Récupérer tous les clubs
      */
     public function index(): JsonResponse
     {
@@ -28,7 +28,7 @@ class ClubController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Créer un nouveau club
      */
     public function store(StoreClubRequest $request): JsonResponse
     {
@@ -44,7 +44,7 @@ class ClubController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Récupérer un club par ID
      */
     public function show(int $id): JsonResponse
     {
@@ -56,7 +56,7 @@ class ClubController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Mettre à jour un club
      */
     public function update(UpdateClubRequest $request, int $id): JsonResponse
     {
@@ -69,7 +69,7 @@ class ClubController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprimer un club
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
