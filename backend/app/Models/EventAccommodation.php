@@ -17,11 +17,17 @@ class EventAccommodation extends Model
         'available_places',
     ];
 
+    /**
+     * L'événement pour lequel l'hébergement est proposé
+     */
     public function event()
     {
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * L'utilisateur qui propose l'hébergement
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

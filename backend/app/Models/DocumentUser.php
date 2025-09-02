@@ -5,28 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventCarpooling extends Model
+class DocumentUser extends Model
 {
     use HasFactory;
 
-    protected $table = 'event_carpooling';
+    protected $table = 'document_users';
 
     protected $fillable = [
-        'event_id',
+        'document_id',
         'user_id',
-        'available_seats',
     ];
 
     /**
-     * L'événement pour lequel le covoiturage est proposé
+     * Le document associé
      */
-    public function event()
+    public function document()
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Document::class);
     }
 
     /**
-     * L'utilisateur qui propose le covoiturage
+     * L'utilisateur associé
      */
     public function user()
     {

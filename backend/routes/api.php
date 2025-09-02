@@ -4,7 +4,9 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,4 +51,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events/{id}/carpooling', [EventController::class, 'addCarpooling']);
     Route::post('/events/{id}/accommodation', [EventController::class, 'addAccommodation']);
     Route::apiResource('events', EventController::class);
+    
+    // Group routes
+    Route::get('/groups/search', [GroupController::class, 'search']);
+    Route::get('/groups/{id}/members', [GroupController::class, 'members']);
+    Route::post('/groups/{id}/members', [GroupController::class, 'addMember']);
+    Route::delete('/groups/{id}/members', [GroupController::class, 'removeMember']);
+    Route::apiResource('groups', GroupController::class);
+    
+    // Document routes
+    Route::get('/documents/search', [DocumentController::class, 'search']);
+    Route::get('/documents/accessible', [DocumentController::class, 'accessible']);
+    Route::get('/documents/{id}/download', [DocumentController::class, 'download']);
+    Route::apiResource('documents', DocumentController::class);
 });

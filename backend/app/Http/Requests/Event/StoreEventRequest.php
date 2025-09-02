@@ -21,6 +21,7 @@ class StoreEventRequest extends FormRequest
             'end_date' => 'required|date|after:start_date',
             'location' => 'required|string|max:255',
             'max_participants' => 'nullable|integer|min:1',
+            'club_id' => 'required|exists:clubs,id',
         ];
     }
 

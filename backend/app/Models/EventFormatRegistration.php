@@ -14,11 +14,17 @@ class EventFormatRegistration extends Model
         'event_format_id',
     ];
 
+    /**
+     * L'inscription à l'événement associée
+     */
     public function eventRegistration()
     {
         return $this->belongsTo(EventRegistration::class);
     }
 
+    /**
+     * Le format d'événement choisi
+     */
     public function eventFormat()
     {
         return $this->belongsTo(EventFormat::class);

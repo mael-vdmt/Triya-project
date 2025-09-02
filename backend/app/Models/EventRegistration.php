@@ -20,16 +20,25 @@ class EventRegistration extends Model
         'registered_at' => 'datetime',
     ];
 
+    /**
+     * L'événement pour lequel l'utilisateur s'est inscrit
+     */
     public function event()
     {
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * L'utilisateur qui s'est inscrit à l'événement
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Les inscriptions aux formats spécifiques de cet événement
+     */
     public function formatRegistrations()
     {
         return $this->hasMany(EventFormatRegistration::class);

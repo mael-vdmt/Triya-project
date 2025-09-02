@@ -15,11 +15,17 @@ class EventFormat extends Model
         'description',
     ];
 
+    /**
+     * L'événement auquel appartient ce format
+     */
     public function event()
     {
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * Les inscriptions à ce format d'événement
+     */
     public function formatRegistrations()
     {
         return $this->hasMany(EventFormatRegistration::class);

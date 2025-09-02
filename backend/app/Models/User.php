@@ -10,14 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -27,21 +21,11 @@ class User extends Authenticatable
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -81,5 +65,50 @@ class User extends Authenticatable
                     ->wherePivot('role', 'admin')
                     ->withPivot('role', 'joined_at')
                     ->withTimestamps();
+    }
+
+    /**
+     * Les groupes auxquels l'utilisateur appartient
+     */
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_users')
+                    ->withPivot('role', 'joined_at')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Les groupes dont l'utilisateur est administrateur
+     */
+    public function adminGroups()
+    {
+        return $this->belongsToMany(Group::class, 'group_users')
+                    ->wherePivot('role', 'admin')
+                    ->withPivot('role', 'joined_at')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Les groupes créés par l'utilisateur
+     */
+    public function createdGroups()
+    {
+        return $this->hasMany(Group::class, 'created_by');
+    }
+
+    /**
+     * Les documents uploadés par l'utilisateur
+     */
+    public function uploadedDocuments()
+    {
+        return $this->hasMany(Document::class, 'uploaded_by');
+    }
+
+    /**
+     * Les documents auxquels l'utilisateur a accès individuel
+     */
+    public function accessibleDocuments()
+    {
+        return $this->belongsToMany(Document::class, 'document_users');
     }
 }
