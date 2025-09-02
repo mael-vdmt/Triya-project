@@ -10,36 +10,36 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Test route
+// Route de test
 Route::get('/test', function () {
     return response()->json(['message' => 'API is working!']);
 });
 
-// CSRF cookie route for SPA
+// Route CSRF cookie pour SPA
 Route::get('/sanctum/csrf-cookie', function () {
     return response()->json(['message' => 'CSRF cookie set']);
 });
 
-// Guest routes
+// Routes publiques
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
-// Protected routes
+// Routes protégées
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LogoutController::class, 'logout']);
     Route::get('/user', [UserController::class, 'user']);
     
-    // User routes
+    // Routes des utilisateurs
     Route::apiResource('users', UserController::class);
     
-    // Club routes
+    // Routes des clubs
     Route::get('/clubs/search', [ClubController::class, 'search']);
     Route::get('/clubs/{id}/members', [ClubController::class, 'members']);
     Route::post('/clubs/{id}/members', [ClubController::class, 'addMember']);
     Route::delete('/clubs/{id}/members', [ClubController::class, 'removeMember']);
     Route::apiResource('clubs', ClubController::class);
     
-    // Event routes
+    // Routes des événements
     Route::get('/events/search', [EventController::class, 'search']);
     Route::get('/clubs/{id}/events', [EventController::class, 'clubEvents']);
     Route::post('/events/{id}/approve', [EventController::class, 'approve']);
@@ -52,14 +52,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events/{id}/accommodation', [EventController::class, 'addAccommodation']);
     Route::apiResource('events', EventController::class);
     
-    // Group routes
+    // Routes des groupes
     Route::get('/groups/search', [GroupController::class, 'search']);
     Route::get('/groups/{id}/members', [GroupController::class, 'members']);
     Route::post('/groups/{id}/members', [GroupController::class, 'addMember']);
     Route::delete('/groups/{id}/members', [GroupController::class, 'removeMember']);
     Route::apiResource('groups', GroupController::class);
     
-    // Document routes
+    // Routes des documents
     Route::get('/documents/search', [DocumentController::class, 'search']);
     Route::get('/documents/accessible', [DocumentController::class, 'accessible']);
     Route::get('/documents/{id}/download', [DocumentController::class, 'download']);
