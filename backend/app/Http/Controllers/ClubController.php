@@ -73,6 +73,15 @@ class ClubController extends Controller
      */
     public function destroy(Request $request, int $id): JsonResponse
     {
+        $club = $this->clubService->find($id);
+        
+        // Vérifier que l'utilisateur est le propriétaire
+        if (!$club->isOwner($request->user())) {
+            return response()->json([
+                'error' => 'Seul le propriétaire peut supprimer le club'
+            ], 403);
+        }
+        
         $this->clubService->delete($id);
         
         return response()->json([
@@ -80,25 +89,7 @@ class ClubController extends Controller
         ]);
     }
 
-    /**
-     * Rechercher des clubs
-     */
-    public function search(Request $request): JsonResponse
-    {
-        $query = $request->get('q', '');
-        
-        if (empty($query)) {
-            return response()->json([
-                'data' => []
-            ]);
-        }
 
-        $clubs = $this->clubService->search($query);
-        
-        return response()->json([
-            'data' => ClubResource::collection($clubs)
-        ]);
-    }
 
     /**
      * Récupérer les membres d'un club

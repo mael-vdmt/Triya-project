@@ -69,7 +69,7 @@ class Club extends Model
     /**
      * Vérifier si un utilisateur est propriétaire du club
      */
-    public function isOwnedBy(User $user): bool
+    public function isOwner(User $user): bool
     {
         return $this->users()
                     ->where('user_id', $user->id)
@@ -78,7 +78,7 @@ class Club extends Model
     }
 
     /**
-     * Vérifier si un utilisateur est administrateur du club
+     * Vérifier si un utilisateur est administrateur du club (admin ou owner)
      */
     public function isAdmin(User $user): bool
     {

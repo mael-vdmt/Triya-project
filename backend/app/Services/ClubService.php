@@ -99,16 +99,6 @@ class ClubService implements ServiceInterface
         $club->users()->detach($userId);
     }
 
-    /**
-     * Rechercher des clubs par nom ou localisation
-     */
-    public function search(string $query)
-    {
-        return Club::where('name', 'like', "%{$query}%")
-                   ->orWhere('location', 'like', "%{$query}%")
-                   ->orWhere('description', 'like', "%{$query}%")
-                   ->with('users')
-                   ->get();
-    }
+
 
 }

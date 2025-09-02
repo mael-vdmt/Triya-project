@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClubController;
+use App\Http\Controllers\ClubInvitationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GroupController;
@@ -23,6 +24,8 @@ Route::get('/sanctum/csrf-cookie', function () {
 // Routes publiques
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
+Route::get('/invitation/{token}', [ClubInvitationController::class, 'show']);
+Route::post('/invitation/{token}/accept', [ClubInvitationController::class, 'accept']);
 
 // Routes protégées
 Route::middleware('auth:sanctum')->group(function () {
@@ -33,11 +36,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class);
     
     // Routes des clubs
-    Route::get('/clubs/search', [ClubController::class, 'search']);
     Route::get('/clubs/{id}/members', [ClubController::class, 'members']);
     Route::post('/clubs/{id}/members', [ClubController::class, 'addMember']);
     Route::delete('/clubs/{id}/members', [ClubController::class, 'removeMember']);
     Route::apiResource('clubs', ClubController::class);
+    
+    // Routes des invitations de club
+    Route::get('/clubs/{clubId}/invitations', [ClubInvitationController::class, 'index']);
+    Route::post('/clubs/{clubId}/invitations', [ClubInvitationController::class, 'store']);
+    Route::post('/clubs/{clubId}/invitations/link', [ClubInvitationController::class, 'createLink']);
+    Route::delete('/invitations/{invitationId}', [ClubInvitationController::class, 'destroy']);
     
     // Routes des événements
     Route::get('/events/search', [EventController::class, 'search']);
