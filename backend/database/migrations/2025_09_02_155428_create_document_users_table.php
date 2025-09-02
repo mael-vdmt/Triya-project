@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('club_user', function (Blueprint $table) {
+        Schema::create('document_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('club_id')->constrained()->onDelete('cascade');
+            $table->foreignId('document_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('role', ['member', 'admin', 'owner'])->default('member');
-            $table->timestamp('joined_at')->useCurrent();
             $table->timestamps();
             
-            // Empêcher un utilisateur d'être dans le même club plusieurs fois
-            $table->unique(['club_id', 'user_id']);
+            // Index unique pour éviter les doublons
+            $table->unique(['document_id', 'user_id']);
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('club_user');
+        Schema::dropIfExists('document_users');
     }
 };

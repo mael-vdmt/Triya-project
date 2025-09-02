@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('club_user', function (Blueprint $table) {
+        Schema::create('event_chat_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('club_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_chat_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('role', ['member', 'admin', 'owner'])->default('member');
-            $table->timestamp('joined_at')->useCurrent();
+            $table->text('message');
+            $table->timestamp('read_at')->nullable(); // Pour marquer comme lu
             $table->timestamps();
             
-            // Empêcher un utilisateur d'être dans le même club plusieurs fois
-            $table->unique(['club_id', 'user_id']);
+            // Index pour optimiser les requêtes par chat et date
+            $table->index(['event_chat_id', 'created_at']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('club_user');
+        Schema::dropIfExists('event_chat_messages');
     }
 };
