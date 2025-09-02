@@ -19,12 +19,38 @@
           </UiAlert>
 
           <UiInput
-            v-model="form.name"
-            label="Nom complet"
+            v-model="form.first_name"
+            label="Prénom"
             type="text"
-            placeholder="Entrez votre nom complet"
+            placeholder="Entrez votre prénom"
             required
-            :error="errors.name"
+            :error="errors.first_name"
+          />
+
+          <UiInput
+            v-model="form.last_name"
+            label="Nom de famille"
+            type="text"
+            placeholder="Entrez votre nom de famille"
+            required
+            :error="errors.last_name"
+          />
+
+          <UiInput
+            v-model="form.date_of_birth"
+            label="Date de naissance"
+            type="date"
+            placeholder="Sélectionnez votre date de naissance"
+            required
+            :error="errors.date_of_birth"
+          />
+
+          <UiInput
+            v-model="form.phone"
+            label="Numéro de téléphone"
+            type="tel"
+            placeholder="Entrez votre numéro de téléphone (optionnel)"
+            :error="errors.phone"
           />
 
           <UiInput
@@ -81,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import { useAuthStore } from '../../store';
 import UiCard from '../../components/ui/UiCard.vue';
 import UiInput from '../../components/ui/UiInput.vue';
@@ -90,8 +116,16 @@ import UiAlert from '../../components/ui/UiAlert.vue';
 
 const authStore = useAuthStore();
 
+// Effacer les erreurs au montage du composant
+onMounted(() => {
+  authStore.clearError();
+});
+
 const form = reactive({
-  name: '',
+  first_name: '',
+  last_name: '',
+  date_of_birth: '',
+  phone: '',
   email: '',
   password: '',
   password_confirmation: '',
@@ -103,8 +137,14 @@ const handleRegister = async () => {
   errors.value = {};
   
   // Basic validation
-  if (!form.name) {
-    errors.value.name = 'Le nom est requis';
+  if (!form.first_name) {
+    errors.value.first_name = 'Le prénom est requis';
+  }
+  if (!form.last_name) {
+    errors.value.last_name = 'Le nom de famille est requis';
+  }
+  if (!form.date_of_birth) {
+    errors.value.date_of_birth = 'La date de naissance est requise';
   }
   if (!form.email) {
     errors.value.email = 'L\'email est requis';
@@ -122,7 +162,10 @@ const handleRegister = async () => {
 
   try {
     await authStore.register({
-      name: form.name,
+      first_name: form.first_name,
+      last_name: form.last_name,
+      date_of_birth: form.date_of_birth,
+      phone: form.phone || undefined,
       email: form.email,
       password: form.password,
       password_confirmation: form.password_confirmation,

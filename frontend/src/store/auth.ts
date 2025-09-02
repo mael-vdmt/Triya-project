@@ -38,7 +38,7 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('user', JSON.stringify(response.user));
       }
       
-      await router.push('/profile');
+      await router.push('/dashboard');
       return response;
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Échec de la connexion';
@@ -63,7 +63,7 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('user', JSON.stringify(response.user));
       }
       
-      await router.push('/profile');
+      await router.push('/dashboard');
       return response;
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Échec de l\'inscription';

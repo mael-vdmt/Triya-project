@@ -5,17 +5,16 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class ClubResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'date_of_birth' => $this->date_of_birth,
-            'phone' => $this->phone,
-            'email' => $this->email,
+            'name' => $this->name,
+            'description' => $this->description,
+            'location' => $this->location,
+            'members_count' => $this->when($this->relationLoaded('users'), $this->users->count()),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

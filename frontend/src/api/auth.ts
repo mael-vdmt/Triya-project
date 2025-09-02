@@ -7,7 +7,10 @@ export interface LoginData {
 }
 
 export interface RegisterData {
-  name: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  phone?: string;
   email: string;
   password: string;
   password_confirmation: string;
@@ -15,7 +18,10 @@ export interface RegisterData {
 
 export interface User {
   id: number;
-  name: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  phone?: string;
   email: string;
   created_at: string;
   updated_at: string;

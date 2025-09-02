@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../store';
 import UiCard from '../../components/ui/UiCard.vue';
@@ -73,6 +73,11 @@ import UiAlert from '../../components/ui/UiAlert.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
+
+// Effacer les erreurs au montage du composant
+onMounted(() => {
+  authStore.clearError();
+});
 
 const form = reactive({
   email: '',
@@ -98,7 +103,6 @@ const handleLogin = async () => {
 
   try {
     await authStore.login(form);
-    router.push('/profile');
   } catch (error) {
     console.error('Erreur de connexion:', error);
   }
