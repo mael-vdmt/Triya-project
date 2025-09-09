@@ -4,7 +4,7 @@
     <Header />
     
     <!-- Contenu principal -->
-    <main class="flex-1 py-8">
+    <main class="flex-1 py-4">
       <slot />
     </main>
     

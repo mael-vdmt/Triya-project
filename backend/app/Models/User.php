@@ -111,4 +111,20 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Document::class, 'document_users');
     }
+
+    /**
+     * Vérifier si l'utilisateur appartient à au moins un club
+     */
+    public function hasClubs(): bool
+    {
+        return $this->clubs()->exists();
+    }
+
+    /**
+     * Vérifier si l'utilisateur est propriétaire d'au moins un club
+     */
+    public function ownsClubs(): bool
+    {
+        return $this->ownedClubs()->exists();
+    }
 }

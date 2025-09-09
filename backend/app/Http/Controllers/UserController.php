@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Http\Resources\ClubResource;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -81,6 +82,31 @@ class UserController extends Controller
             'data' => new UserResource($user),
             'has_clubs' => $user->hasClubs(),
             'owns_clubs' => $user->ownsClubs()
+        ]);
+    }
+
+    /**
+     * Récupérer les clubs de l'utilisateur authentifié
+     */
+    public function clubs(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $clubs = $this->userService->getUserClubs($user->id);
+        
+        return response()->json([
+            'data' => ClubResource::collection($clubs),
+            'clubs_with_roles' => $clubs->map(function ($club) {
+                return [
+                    'id' => $club->id,
+                    'name' => $club->name,
+                    'description' => $club->description,
+                    'location' => $club->location,
+                    'role' => $club->pivot->role,
+                    'joined_at' => $club->pivot->joined_at,
+                    'created_at' => $club->created_at,
+                    'updated_at' => $club->updated_at,
+                ];
+            })
         ]);
     }
 }

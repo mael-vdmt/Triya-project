@@ -24,6 +24,19 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null;
   };
 
+  const redirectAfterAuth = async () => {
+    if (!user.value) return;
+    
+    // Vérifier si l'utilisateur a des clubs
+    if (user.value.has_clubs) {
+      // L'utilisateur a des clubs, rediriger vers le dashboard
+      await router.push('/dashboard');
+    } else {
+      // L'utilisateur n'a pas de clubs, rediriger vers l'onboarding
+      await router.push('/onboarding');
+    }
+  };
+
   const login = async (credentials: LoginData) => {
     try {
       loading.value = true;
@@ -38,7 +51,8 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('user', JSON.stringify(response.user));
       }
       
-      await router.push('/dashboard');
+      // Rediriger selon le statut des clubs
+      await redirectAfterAuth();
       return response;
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Échec de la connexion';
@@ -63,7 +77,8 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('user', JSON.stringify(response.user));
       }
       
-      await router.push('/dashboard');
+      // Rediriger selon le statut des clubs
+      await redirectAfterAuth();
       return response;
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Échec de l\'inscription';

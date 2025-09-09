@@ -31,6 +31,7 @@ Route::post('/invitation/{token}/accept', [ClubInvitationController::class, 'acc
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LogoutController::class, 'logout']);
     Route::get('/user', [UserController::class, 'user']);
+    Route::get('/user/clubs', [UserController::class, 'clubs']);
     
     // Routes des utilisateurs
     Route::apiResource('users', UserController::class);

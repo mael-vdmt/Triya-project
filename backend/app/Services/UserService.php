@@ -77,6 +77,15 @@ class UserService implements ServiceInterface
         return true;
     }
 
+    /**
+     * Récupérer les clubs d'un utilisateur
+     */
+    public function getUserClubs(int $userId)
+    {
+        $user = $this->find($userId);
+        return $user->clubs()->withPivot('role', 'joined_at')->get();
+    }
+
 
 
 

@@ -18,6 +18,10 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            
+            // Flags pour déterminer le parcours utilisateur
+            'has_clubs' => $this->hasClubs(),
+            'owns_clubs' => $this->ownsClubs(),
         ];
     }
 }

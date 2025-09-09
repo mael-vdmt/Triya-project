@@ -10,6 +10,7 @@
         <!-- Navigation Desktop -->
         <nav class="hidden md:flex space-x-8">
           <router-link
+            v-if="authStore.user?.has_clubs"
             to="/dashboard"
             class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
             :class="{ 'text-primary-600 bg-primary-50': $route.path === '/dashboard' }"
@@ -17,6 +18,7 @@
             Dashboard
           </router-link>
           <router-link
+            v-if="authStore.user?.has_clubs"
             to="/profile"
             class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
             :class="{ 'text-primary-600 bg-primary-50': $route.path === '/profile' }"
@@ -74,6 +76,7 @@
       >
         <nav class="flex flex-col space-y-2">
           <router-link
+            v-if="authStore.user?.has_clubs"
             to="/dashboard"
             @click="closeMobileMenu"
             class="text-gray-700 hover:text-primary-600 hover:bg-primary-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
@@ -82,6 +85,7 @@
             Dashboard
           </router-link>
           <router-link
+            v-if="authStore.user?.has_clubs"
             to="/profile"
             @click="closeMobileMenu"
             class="text-gray-700 hover:text-primary-600 hover:bg-primary-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"

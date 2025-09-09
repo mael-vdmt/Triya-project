@@ -22,12 +22,18 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('../pages/dashboard/Dashboard.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiresClubs: true },
   },
   {
     path: '/profile',
     name: 'Profile',
     component: () => import('../pages/profile/Profile.vue'),
+    meta: { requiresAuth: true, requiresClubs: true },
+  },
+  {
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import('../pages/onboarding/Onboarding.vue'),
     meta: { requiresAuth: true },
   },
 ];
@@ -54,6 +60,13 @@ router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     // User is not authenticated, redirect to login
     next('/login');
+    return;
+  }
+
+  // Check if route requires clubs
+  if (to.meta.requiresClubs && authStore.isAuthenticated && !authStore.user?.has_clubs) {
+    // User is authenticated but has no clubs, redirect to onboarding
+    next('/onboarding');
     return;
   }
 
