@@ -17,6 +17,40 @@
           >
             Dashboard
           </router-link>
+          
+          <!-- Menu Clubs -->
+          <div class="relative group" v-if="authStore.user?.has_clubs">
+            <button class="text-sport-700 hover:text-accent-500 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300 hover:bg-accent-50 flex items-center">
+              Clubs
+              <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            
+            <!-- Dropdown Menu -->
+            <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <router-link
+                to="/clubs/create"
+                class="block px-4 py-2 text-sm text-sport-700 hover:bg-accent-50 hover:text-accent-500 transition-colors"
+              >
+                Créer un club
+              </router-link>
+              <router-link
+                to="/clubs/join"
+                class="block px-4 py-2 text-sm text-sport-700 hover:bg-accent-50 hover:text-accent-500 transition-colors"
+              >
+                Rejoindre un club
+              </router-link>
+              <div class="border-t border-sport-200 my-1"></div>
+              <router-link
+                to="/clubs"
+                class="block px-4 py-2 text-sm text-sport-700 hover:bg-accent-50 hover:text-accent-500 transition-colors"
+              >
+                Mes clubs
+              </router-link>
+            </div>
+          </div>
+          
           <router-link
             v-if="authStore.user?.has_clubs"
             to="/profile"
@@ -84,6 +118,38 @@
           >
             Dashboard
           </router-link>
+          
+          <!-- Menu Clubs Mobile -->
+          <div v-if="authStore.user?.has_clubs" class="space-y-1">
+            <div class="text-sport-700 px-3 py-2 text-sm font-semibold text-sport-500">
+              Clubs
+            </div>
+            <router-link
+              to="/clubs/create"
+              @click="closeMobileMenu"
+              class="block text-sport-700 hover:text-accent-500 hover:bg-accent-50 px-6 py-2 rounded-md text-sm transition-all duration-300"
+              :class="{ 'text-accent-500 bg-accent-50': $route.path === '/clubs/create' }"
+            >
+              Créer un club
+            </router-link>
+            <router-link
+              to="/clubs/join"
+              @click="closeMobileMenu"
+              class="block text-sport-700 hover:text-accent-500 hover:bg-accent-50 px-6 py-2 rounded-md text-sm transition-all duration-300"
+              :class="{ 'text-accent-500 bg-accent-50': $route.path === '/clubs/join' }"
+            >
+              Rejoindre un club
+            </router-link>
+            <router-link
+              to="/clubs"
+              @click="closeMobileMenu"
+              class="block text-sport-700 hover:text-accent-500 hover:bg-accent-50 px-6 py-2 rounded-md text-sm transition-all duration-300"
+              :class="{ 'text-accent-500 bg-accent-50': $route.path === '/clubs' }"
+            >
+              Mes clubs
+            </router-link>
+          </div>
+          
           <router-link
             v-if="authStore.user?.has_clubs"
             to="/profile"
@@ -110,10 +176,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '../store';
-import { useRouter } from 'vue-router';
 
 const authStore = useAuthStore();
-const router = useRouter();
 
 // État du menu mobile
 const isMobileMenuOpen = ref(false);

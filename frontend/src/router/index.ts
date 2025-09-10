@@ -42,6 +42,18 @@ const routes = [
     component: () => import('../pages/clubs/CreateClub.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/clubs/join',
+    name: 'JoinClub',
+    component: () => import('../pages/clubs/JoinClub.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/clubs',
+    name: 'MyClubs',
+    component: () => import('../pages/clubs/MyClubs.vue'),
+    meta: { requiresAuth: true, requiresClubs: true },
+  },
 ];
 
 const router = createRouter({
@@ -50,7 +62,7 @@ const router = createRouter({
 });
 
 // Navigation guards
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore();
   
   // Initialize auth state if not already done

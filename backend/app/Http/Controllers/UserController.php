@@ -79,9 +79,7 @@ class UserController extends Controller
         $user = $request->user();
         
         return response()->json([
-            'data' => new UserResource($user),
-            'has_clubs' => $user->hasClubs(),
-            'owns_clubs' => $user->ownsClubs()
+            'user' => new UserResource($user)
         ]);
     }
 
