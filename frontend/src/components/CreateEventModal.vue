@@ -43,13 +43,6 @@
           </div>
         </div>
 
-        <UiInput
-          v-model="eventData.description"
-          label="Description"
-          placeholder="Décrivez votre événement..."
-          type="textarea"
-        />
-
         <!-- Champs spécifiques selon le type -->
         <div v-if="eventData.type === 'competition'" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -77,6 +70,13 @@
         </div>
 
         <div v-else-if="eventData.type === 'club_life'" class="space-y-6">
+          <UiInput
+            v-model="eventData.description"
+            label="Description"
+            placeholder="Décrivez votre événement..."
+            type="textarea"
+          />
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <UiInput
               v-model="eventData.start_date"
