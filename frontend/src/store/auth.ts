@@ -99,6 +99,18 @@ export const useAuthStore = defineStore('auth', () => {
       setUser(null);
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
+      
+      // Vider tous les stores Pinia
+      const { useClubStore } = await import('./club');
+      const { useEventStore } = await import('./event');
+      
+      const clubStore = useClubStore();
+      const eventStore = useEventStore();
+      
+      // Réinitialiser les stores
+      clubStore.reset();
+      eventStore.reset();
+      
       await router.push('/login');
     }
   };

@@ -222,6 +222,14 @@ export const useClubStore = defineStore('club', () => {
     }
   };
 
+  const reset = () => {
+    clubs.value = [];
+    currentClub.value = null;
+    selectedClubId.value = null;
+    loading.value = false;
+    error.value = null;
+  };
+
   return {
     clubs,
     currentClub,
@@ -241,5 +249,6 @@ export const useClubStore = defineStore('club', () => {
     addMember,
     removeMember,
     selectClub,
+    reset,
   };
 });

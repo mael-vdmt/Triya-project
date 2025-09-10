@@ -90,9 +90,29 @@ const createEvent = async (eventData: any) => {
       throw new Error('Aucun club sélectionné');
     }
     
-    eventData.club_id = clubStore.currentClub.id;
+    const { autoRegister, ...eventDataToCreate } = eventData;
+    eventDataToCreate.club_id = clubStore.currentClub.id;
     
-    await eventStore.createEvent(eventData);
+    // Créer l'événement
+    const newEvent = await eventStore.createEvent(eventDataToCreate);
+    
+    // Si auto-register est coché, s'inscrire automatiquement
+    if (autoRegister) {
+      try {
+        await eventStore.markAsRegistered(newEvent.id);
+      } catch (registerError) {
+        console.error('Erreur lors de l\'inscription automatique:', registerError);
+        // Ne pas faire échouer la création de l'événement si l'inscription échoue
+      }
+    } else {
+      // Sinon, marquer comme intéressé
+      try {
+        await eventStore.markAsInterested(newEvent.id);
+      } catch (interestedError) {
+        console.error('Erreur lors du marquage comme intéressé:', interestedError);
+        // Ne pas faire échouer la création de l'événement
+      }
+    }
     
     showCreateEventModal.value = false;
   } catch (error) {

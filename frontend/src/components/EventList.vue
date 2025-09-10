@@ -20,7 +20,14 @@
               <h3 class="text-xl font-bold text-sport-800 mb-2">{{ event.title }}</h3>
               <p class="text-sport-500 text-sm mb-2">{{ event.location }}</p>
             </div>
-            <span class="px-2 py-1 bg-accent-100 text-accent-800 text-xs font-semibold rounded-full">
+            <span 
+              :class="[
+                'px-2 py-1 text-xs font-semibold rounded-full',
+                event.type === 'competition' 
+                  ? 'bg-sport-100 text-sport-800' 
+                  : 'bg-accent-100 text-accent-800'
+              ]"
+            >
               {{ event.type === 'competition' ? 'Compétition' : 'Vie du club' }}
             </span>
           </div>

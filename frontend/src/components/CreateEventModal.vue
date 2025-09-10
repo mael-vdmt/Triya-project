@@ -101,6 +101,19 @@
           />
         </div>
 
+        <!-- Case à cocher pour s'inscrire automatiquement -->
+        <div v-if="eventData.type" class="flex items-center space-x-3 p-4 bg-sport-50 rounded-lg">
+          <input
+            id="auto-register"
+            v-model="autoRegister"
+            type="checkbox"
+            class="w-4 h-4 text-accent-600 border-sport-300 rounded focus:ring-accent-500"
+          />
+          <label for="auto-register" class="text-sm font-medium text-sport-700">
+            {{ eventData.type === 'competition' ? 'Je suis inscrit' : 'Je serai présent' }}
+          </label>
+        </div>
+
         <div class="flex space-x-4 pt-4">
           <UiButton
             type="button"
@@ -162,6 +175,8 @@ const eventData = ref({
   location: '',
 });
 
+const autoRegister = ref(false);
+
 // Réinitialiser le formulaire quand le modal s'ouvre
 watch(() => props.show, (isOpen) => {
   if (isOpen) {
@@ -174,6 +189,7 @@ watch(() => props.show, (isOpen) => {
       end_date: '',
       location: '',
     };
+    autoRegister.value = false;
   }
 });
 
@@ -185,6 +201,9 @@ watch(() => eventData.value.start_date, (newStartDate) => {
 });
 
 const handleSubmit = () => {
-  emit('submit', eventData.value);
+  emit('submit', {
+    ...eventData.value,
+    autoRegister: autoRegister.value
+  });
 };
 </script>

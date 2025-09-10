@@ -243,6 +243,13 @@ export const useEventStore = defineStore('event', () => {
     return await registerToEvent(eventId, 'registered');
   };
 
+  const reset = () => {
+    events.value = [];
+    currentEvent.value = null;
+    loading.value = false;
+    error.value = null;
+  };
+
   return {
     events,
     currentEvent,
@@ -264,5 +271,6 @@ export const useEventStore = defineStore('event', () => {
     unregisterFromEvent,
     markAsInterested,
     markAsRegistered,
+    reset,
   };
 });
