@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gradient-to-br from-primary-50 to-blue-50">
+  <div class="min-h-screen flex flex-col sport-bg">
     <!-- Header -->
     <Header />
     

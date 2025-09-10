@@ -1,10 +1,10 @@
 <template>
-  <header class="bg-white shadow-sm border-b border-gray-200">
+  <header class="bg-white/90 backdrop-blur-sm shadow-sport border-b border-sport-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo/Titre -->
         <div class="flex items-center">
-          <h1 class="text-2xl font-bold text-primary-600">Triya</h1>
+          <h1 class="text-2xl font-bold text-sport-800">Triya</h1>
         </div>
 
         <!-- Navigation Desktop -->
@@ -12,16 +12,16 @@
           <router-link
             v-if="authStore.user?.has_clubs"
             to="/dashboard"
-            class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            :class="{ 'text-primary-600 bg-primary-50': $route.path === '/dashboard' }"
+            class="text-sport-700 hover:text-accent-500 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300 hover:bg-accent-50"
+            :class="{ 'text-accent-500 bg-accent-50': $route.path === '/dashboard' }"
           >
             Dashboard
           </router-link>
           <router-link
             v-if="authStore.user?.has_clubs"
             to="/profile"
-            class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            :class="{ 'text-primary-600 bg-primary-50': $route.path === '/profile' }"
+            class="text-sport-700 hover:text-accent-500 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300 hover:bg-accent-50"
+            :class="{ 'text-accent-500 bg-accent-50': $route.path === '/profile' }"
           >
             Profil
           </router-link>
@@ -31,7 +31,7 @@
         <div class="hidden md:flex items-center">
           <button
             @click="handleLogout"
-            class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+            class="text-sport-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300 hover:bg-red-50"
           >
             Se déconnecter
           </button>
@@ -41,7 +41,7 @@
         <div class="md:hidden">
           <button
             @click="toggleMobileMenu"
-            class="text-gray-700 hover:text-primary-600 p-2 rounded-md transition-colors duration-200"
+            class="text-sport-700 hover:text-accent-500 p-2 rounded-md transition-all duration-300"
             aria-label="Menu"
           >
             <svg
@@ -72,15 +72,15 @@
       <!-- Menu Mobile -->
       <div
         v-show="isMobileMenuOpen"
-        class="md:hidden border-t border-gray-200 py-4"
+        class="md:hidden border-t border-sport-200 py-4"
       >
         <nav class="flex flex-col space-y-2">
           <router-link
             v-if="authStore.user?.has_clubs"
             to="/dashboard"
             @click="closeMobileMenu"
-            class="text-gray-700 hover:text-primary-600 hover:bg-primary-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            :class="{ 'text-primary-600 bg-primary-50': $route.path === '/dashboard' }"
+            class="text-sport-700 hover:text-accent-500 hover:bg-accent-50 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300"
+            :class="{ 'text-accent-500 bg-accent-50': $route.path === '/dashboard' }"
           >
             Dashboard
           </router-link>
@@ -88,15 +88,15 @@
             v-if="authStore.user?.has_clubs"
             to="/profile"
             @click="closeMobileMenu"
-            class="text-gray-700 hover:text-primary-600 hover:bg-primary-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
-            :class="{ 'text-primary-600 bg-primary-50': $route.path === '/profile' }"
+            class="text-sport-700 hover:text-accent-500 hover:bg-accent-50 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300"
+            :class="{ 'text-accent-500 bg-accent-50': $route.path === '/profile' }"
           >
             Profil
           </router-link>
-          <div class="border-t border-gray-200 pt-2 mt-2">
+          <div class="border-t border-sport-200 pt-2 mt-2">
             <button
               @click="handleLogout"
-              class="w-full text-left text-gray-700 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+              class="w-full text-left text-sport-700 hover:text-red-600 hover:bg-red-50 px-3 py-2 rounded-md text-sm font-semibold transition-all duration-300"
             >
               Se déconnecter
             </button>

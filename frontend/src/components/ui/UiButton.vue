@@ -22,7 +22,7 @@
 import { computed } from 'vue';
 
 interface Props {
-  variant?: 'primary' | 'secondary' | 'danger';
+  variant?: 'primary' | 'secondary' | 'accent' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
@@ -49,7 +49,8 @@ const buttonClasses = computed(() => {
   const variantClasses = {
     primary: 'btn-primary',
     secondary: 'btn-secondary',
-    danger: 'bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-6 rounded-2xl transition-all duration-200 shadow-soft hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
+    accent: 'btn-accent',
+    danger: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2',
   };
   
   const sizeClasses = {

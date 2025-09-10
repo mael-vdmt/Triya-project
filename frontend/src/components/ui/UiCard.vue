@@ -20,11 +20,13 @@ import { computed } from 'vue';
 interface Props {
   padding?: 'sm' | 'md' | 'lg';
   shadow?: 'none' | 'soft' | 'medium' | 'strong';
+  variant?: 'default' | 'sport';
 }
 
 const props = withDefaults(defineProps<Props>(), {
   padding: 'md',
   shadow: 'soft',
+  variant: 'default',
 });
 
 const cardClasses = computed(() => {
@@ -37,10 +39,15 @@ const cardClasses = computed(() => {
   const shadowClasses = {
     none: 'shadow-none',
     soft: 'shadow-soft',
-    medium: 'shadow-lg',
-    strong: 'shadow-2xl',
+    medium: 'shadow-sport',
+    strong: 'shadow-energy',
   };
   
-  return `bg-white rounded-2xl border border-gray-100 ${paddingClasses[props.padding]} ${shadowClasses[props.shadow]}`;
+  const variantClasses = {
+    default: 'bg-white border-sport-100',
+    sport: 'card-sport',
+  };
+  
+  return `rounded-2xl ${paddingClasses[props.padding]} ${shadowClasses[props.shadow]} ${variantClasses[props.variant]}`;
 });
 </script>

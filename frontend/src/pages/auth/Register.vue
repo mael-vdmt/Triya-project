@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-primary-50 to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+  <div class="min-h-screen sport-bg flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-6">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Créer un compte</h1>
-        <p class="text-gray-600">Rejoignez-nous aujourd'hui</p>
+        <h1 class="text-3xl font-bold text-sport-800 mb-2">Créer un compte</h1>
+        <p class="text-sport-600">Rejoignez-nous aujourd'hui</p>
       </div>
 
-      <UiCard>
+      <div class="sport-card">
         <form @submit.prevent="handleRegister" class="space-y-6">
           <UiAlert
             v-if="authStore.error"
@@ -18,23 +18,25 @@
             {{ authStore.error }}
           </UiAlert>
 
-          <UiInput
-            v-model="form.first_name"
-            label="Prénom"
-            type="text"
-            placeholder="Entrez votre prénom"
-            required
-            :error="errors.first_name"
-          />
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <UiInput
+              v-model="form.first_name"
+              label="Prénom"
+              type="text"
+              placeholder="Entrez votre prénom"
+              required
+              :error="errors.first_name"
+            />
 
-          <UiInput
-            v-model="form.last_name"
-            label="Nom de famille"
-            type="text"
-            placeholder="Entrez votre nom de famille"
-            required
-            :error="errors.last_name"
-          />
+            <UiInput
+              v-model="form.last_name"
+              label="Nom de famille"
+              type="text"
+              placeholder="Entrez votre nom de famille"
+              required
+              :error="errors.last_name"
+            />
+          </div>
 
           <UiInput
             v-model="form.date_of_birth"
@@ -90,18 +92,18 @@
           </UiButton>
         </form>
 
-        <div class="mt-6 text-center">
-          <p class="text-sm text-gray-600">
+        <div class="mt-8 text-center">
+          <p class="text-sport-600">
             Vous avez déjà un compte ?
             <router-link
               to="/login"
-              class="font-medium text-primary-600 hover:text-primary-500 transition-colors"
+              class="font-semibold text-accent-600 hover:text-accent-700 transition-colors"
             >
               Se connecter
             </router-link>
           </p>
         </div>
-      </UiCard>
+      </div>
     </div>
   </div>
 </template>

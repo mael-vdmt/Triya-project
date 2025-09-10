@@ -2,8 +2,8 @@
   <AuthenticatedLayout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Dashboard</h1>
-        <p class="text-xl text-gray-600">Page de tableau de bord</p>
+        <h1 class="text-4xl font-bold text-sport-800 mb-4">Dashboard</h1>
+        <p class="text-xl text-sport-600">Page de tableau de bord</p>
       </div>
     </div>
   </AuthenticatedLayout>

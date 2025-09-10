@@ -2,50 +2,52 @@
   <AuthenticatedLayout>
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Bon retour !</h1>
-        <p class="text-xl text-gray-600">Voici vos informations de profil</p>
+        <h1 class="text-4xl font-bold text-sport-800 mb-4">Bon retour !</h1>
+        <p class="text-xl text-sport-600">Voici vos informations de profil</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Profile Card -->
         <div class="lg:col-span-2">
-          <UiCard>
-            <template #header>
-              <h2 class="text-2xl font-semibold text-gray-900">Informations du profil</h2>
-            </template>
+          <div class="sport-card">
+            <div class="mb-6">
+              <h2 class="text-2xl font-bold text-sport-800 mb-2">Informations du profil</h2>
+              <p class="text-sport-600">Gérez vos informations personnelles</p>
+            </div>
 
             <div class="space-y-6">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
-                  <p class="text-lg text-gray-900">{{ authStore.user?.name }}</p>
+                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
+                  <label class="block text-sm font-semibold text-sport-700 mb-2">Nom</label>
+                  <p class="text-lg text-sport-800">{{ authStore.user?.name }}</p>
                 </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                  <p class="text-lg text-gray-900">{{ authStore.user?.email }}</p>
+                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
+                  <label class="block text-sm font-semibold text-sport-700 mb-2">Email</label>
+                  <p class="text-lg text-sport-800">{{ authStore.user?.email }}</p>
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Membre depuis</label>
-                  <p class="text-lg text-gray-900">{{ formatDate(authStore.user?.created_at) }}</p>
+                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
+                  <label class="block text-sm font-semibold text-sport-700 mb-2">Membre depuis</label>
+                  <p class="text-lg text-sport-800">{{ formatDate(authStore.user?.created_at) }}</p>
                 </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Dernière mise à jour</label>
-                  <p class="text-lg text-gray-900">{{ formatDate(authStore.user?.updated_at) }}</p>
+                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
+                  <label class="block text-sm font-semibold text-sport-700 mb-2">Dernière mise à jour</label>
+                  <p class="text-lg text-sport-800">{{ formatDate(authStore.user?.updated_at) }}</p>
                 </div>
               </div>
             </div>
-          </UiCard>
+          </div>
         </div>
 
         <!-- Actions Card -->
         <div class="lg:col-span-1">
-          <UiCard>
-            <template #header>
-              <h3 class="text-xl font-semibold text-gray-900">Actions</h3>
-            </template>
+          <div class="sport-card">
+            <div class="mb-6">
+              <h3 class="text-xl font-bold text-sport-800 mb-2">Actions</h3>
+              <p class="text-sport-600">Gérez votre compte</p>
+            </div>
 
             <div class="space-y-4">
               <UiButton
@@ -65,14 +67,14 @@
               </UiButton>
             </div>
 
-            <template #footer>
+            <div class="mt-8 pt-6 border-t border-sport-200/50">
               <div class="text-center">
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-sport-600">
                   Besoin d'aide ? Contactez le support
                 </p>
               </div>
-            </template>
-          </UiCard>
+            </div>
+          </div>
         </div>
       </div>
     </div>
