@@ -105,8 +105,8 @@ export const eventApi = {
     return response.data;
   },
 
-  async register(eventId: number) {
-    const response = await api.post(`/api/events/${eventId}/register`);
+  async register(eventId: number, status: 'registered' | 'interested' = 'registered') {
+    const response = await api.post(`/api/events/${eventId}/register`, { status });
     return response.data;
   },
 

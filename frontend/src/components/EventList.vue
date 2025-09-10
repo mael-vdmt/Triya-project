@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!-- Loading state -->
-    <div v-if="loading" class="flex justify-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-500"></div>
-    </div>
 
     <!-- Error state -->
     <UiAlert v-if="error" type="error" class="mb-6">
@@ -48,17 +44,45 @@
           </div>
           
           <div class="flex space-x-2">
-            <button class="flex-1 flex items-center justify-center px-3 py-1.5 border-2 border-sport-300 text-sport-700 bg-white hover:border-sport-500 hover:bg-sport-50 hover:text-sport-800 rounded-lg transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md">
-              <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button 
+              @click="handleInterested(event)"
+              :disabled="loadingStates[event.id] || getUserRegistrationStatus(event) === 'registered'"
+              :class="[
+                'flex-1 flex items-center justify-center px-3 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium',
+                getUserRegistrationStatus(event) === 'interested' 
+                  ? 'bg-sport-500 text-white' 
+                  : getUserRegistrationStatus(event) === 'registered'
+                  ? 'border-2 border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed'
+                  : 'border-2 border-sport-300 text-sport-700 bg-white hover:border-sport-500'
+              ]"
+            >
+              <svg v-if="!loadingStates[event.id]" class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              Ça m'intéresse
+              <svg v-else class="w-3.5 h-3.5 mr-1.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {{ getUserRegistrationStatus(event) === 'interested' ? 'Ça ne m\'intéresse plus' : 'Ça m\'intéresse' }}
             </button>
-            <button class="flex-1 flex items-center justify-center px-3 py-1.5 border-2 border-accent-300 text-accent-700 bg-white hover:border-accent-500 hover:bg-accent-50 hover:text-accent-800 rounded-lg transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md">
-              <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button 
+              @click="handleRegistered(event)"
+              :disabled="loadingStates[event.id] || getUserRegistrationStatus(event) === 'interested'"
+              :class="[
+                'flex-1 flex items-center justify-center px-3 py-1.5 rounded-lg transition-all duration-200 text-sm font-medium',
+                getUserRegistrationStatus(event) === 'registered' 
+                  ? 'bg-accent-500 text-white' 
+                  : getUserRegistrationStatus(event) === 'interested'
+                  ? 'border-2 border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed'
+                  : 'border-2 border-accent-300 text-accent-700 bg-white hover:border-accent-500'
+              ]"
+            >
+              <svg v-if="!loadingStates[event.id]" class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
-              Je suis inscrit
+              <svg v-else class="w-3.5 h-3.5 mr-1.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {{ getUserRegistrationStatus(event) === 'registered' ? 'Se désinscrire' : 'Je suis inscrit' }}
             </button>
             <div 
               class="flex items-center justify-center p-1.5 text-sport-400 hover:text-sport-600 hover:bg-sport-50 rounded-lg transition-all duration-200 group cursor-pointer"
@@ -90,6 +114,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useEventStore } from '../store/event';
+import { useAuthStore } from '../store/auth';
 import UiButton from './ui/UiButton.vue';
 import UiAlert from './ui/UiAlert.vue';
 import UiCard from './ui/UiCard.vue';
@@ -103,9 +130,62 @@ interface Props {
 
 const props = defineProps<Props>();
 
-defineEmits<{
+const emit = defineEmits<{
   'create-event': [];
 }>();
+
+const eventStore = useEventStore();
+const authStore = useAuthStore();
+
+// Loading local pour chaque événement
+const loadingStates = ref<Record<number, boolean>>({});
+
+// Vérifier le statut d'inscription de l'utilisateur pour un événement
+const getUserRegistrationStatus = (event: Event): 'interested' | 'registered' | null => {
+  if (!authStore.user || !event.registered_users) return null;
+  
+  const userRegistration = event.registered_users.find(
+    user => user.id === authStore.user!.id
+  );
+  
+  return userRegistration ? userRegistration.status as 'interested' | 'registered' : null;
+};
+
+const handleInterested = async (event: Event) => {
+  try {
+    loadingStates.value[event.id] = true;
+    
+    const currentStatus = getUserRegistrationStatus(event);
+    
+    if (currentStatus === 'interested') {
+      await eventStore.unregisterFromEvent(event.id);
+    } else {
+      await eventStore.markAsInterested(event.id);
+    }
+  } catch (error) {
+    console.error('Erreur:', error);
+  } finally {
+    loadingStates.value[event.id] = false;
+  }
+};
+
+const handleRegistered = async (event: Event) => {
+  try {
+    loadingStates.value[event.id] = true;
+    
+    const currentStatus = getUserRegistrationStatus(event);
+    
+    if (currentStatus === 'registered') {
+      await eventStore.unregisterFromEvent(event.id);
+    } else {
+      await eventStore.markAsRegistered(event.id);
+    }
+  } catch (error) {
+    console.error('Erreur:', error);
+  } finally {
+    loadingStates.value[event.id] = false;
+  }
+};
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);

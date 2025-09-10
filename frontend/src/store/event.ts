@@ -91,9 +91,11 @@ export const useEventStore = defineStore('event', () => {
     }
   };
 
-  const getEventById = async (id: number) => {
+  const getEventById = async (id: number, setLoadingState: boolean = true) => {
     try {
-      setLoading(true);
+      if (setLoadingState) {
+        setLoading(true);
+      }
       clearError();
       
       const response = await eventApi.getById(id);
@@ -104,7 +106,9 @@ export const useEventStore = defineStore('event', () => {
       setError(errorMessage);
       throw err;
     } finally {
-      setLoading(false);
+      if (setLoadingState) {
+        setLoading(false);
+      }
     }
   };
 
@@ -178,17 +182,20 @@ export const useEventStore = defineStore('event', () => {
     }
   };
 
-  const registerToEvent = async (eventId: number) => {
+  const registerToEvent = async (eventId: number, status: 'registered' | 'interested' = 'registered') => {
     try {
       setLoading(true);
       clearError();
       
-      const response = await eventApi.register(eventId);
+      const response = await eventApi.register(eventId, status);
+      
+      // Recharger l'événement pour avoir les données à jour
+      const updatedEvent = await getEventById(eventId, false);
       
       // Mettre à jour l'événement dans la liste
-      const event = events.value.find(e => e.id === eventId);
-      if (event) {
-        event.registrations_count = (event.registrations_count || 0) + 1;
+      const index = events.value.findIndex(e => e.id === eventId);
+      if (index !== -1) {
+        events.value[index] = updatedEvent;
       }
       
       return response.data;
@@ -208,10 +215,13 @@ export const useEventStore = defineStore('event', () => {
       
       const response = await eventApi.unregister(eventId);
       
+      // Recharger l'événement pour avoir les données à jour
+      const updatedEvent = await getEventById(eventId, false);
+      
       // Mettre à jour l'événement dans la liste
-      const event = events.value.find(e => e.id === eventId);
-      if (event) {
-        event.registrations_count = Math.max((event.registrations_count || 1) - 1, 0);
+      const index = events.value.findIndex(e => e.id === eventId);
+      if (index !== -1) {
+        events.value[index] = updatedEvent;
       }
       
       return response.data;
@@ -222,6 +232,15 @@ export const useEventStore = defineStore('event', () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Méthodes spécifiques pour les statuts
+  const markAsInterested = async (eventId: number) => {
+    return await registerToEvent(eventId, 'interested');
+  };
+
+  const markAsRegistered = async (eventId: number) => {
+    return await registerToEvent(eventId, 'registered');
   };
 
   return {
@@ -243,5 +262,7 @@ export const useEventStore = defineStore('event', () => {
     searchEvents,
     registerToEvent,
     unregisterFromEvent,
+    markAsInterested,
+    markAsRegistered,
   };
 });
