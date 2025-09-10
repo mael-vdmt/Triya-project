@@ -78,9 +78,7 @@ import UiAlert from '../../components/ui/UiAlert.vue';
 const router = useRouter();
 
 const createClub = () => {
-  // TODO: Rediriger vers la page de création de club
-  console.log('Créer un club');
-  // router.push('/clubs/create');
+  router.push('/clubs/create');
 };
 
 const joinClub = () => {

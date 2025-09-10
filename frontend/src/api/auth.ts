@@ -25,6 +25,8 @@ export interface User {
   email: string;
   created_at: string;
   updated_at: string;
+  has_clubs: boolean;
+  owns_clubs: boolean;
 }
 
 export const authApi = {

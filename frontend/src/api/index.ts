@@ -25,12 +25,8 @@ api.interceptors.response.use(
       // Don't redirect automatically, let the components handle it
       console.log('Unauthorized request - user needs to login');
       
-      // Clear any stored user data if we get a 401
-      if (error.config.url === '/api/user') {
-        // This is a user fetch request, clear the user
-        localStorage.removeItem('user');
-        localStorage.removeItem('auth_token');
-      }
+      // Ne pas supprimer automatiquement les données utilisateur
+      // Laissons le store auth gérer cela
     }
     return Promise.reject(error);
   }

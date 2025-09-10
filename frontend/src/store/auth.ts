@@ -108,8 +108,13 @@ export const useAuthStore = defineStore('auth', () => {
       const response = await authApi.getUser();
       setUser(response.user);
       return response.user;
-    } catch (err) {
-      setUser(null);
+    } catch (err: any) {
+      // Ne déconnecter l'utilisateur que si c'est vraiment une erreur d'authentification
+      if (err.response?.status === 401) {
+        setUser(null);
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user');
+      }
       throw err;
     }
   };

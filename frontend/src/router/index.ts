@@ -36,6 +36,12 @@ const routes = [
     component: () => import('../pages/onboarding/Onboarding.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/clubs/create',
+    name: 'CreateClub',
+    component: () => import('../pages/clubs/CreateClub.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = createRouter({

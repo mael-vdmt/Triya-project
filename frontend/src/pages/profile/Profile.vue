@@ -1,40 +1,67 @@
 <template>
   <AuthenticatedLayout>
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-sport-800 mb-4">Bon retour !</h1>
-        <p class="text-xl text-sport-600">Voici vos informations de profil</p>
+        <h1 class="text-4xl font-bold text-sport-800 mb-4">Mon Profil</h1>
+        <p class="text-xl text-sport-600">Gérez vos informations personnelles</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Profile Card -->
         <div class="lg:col-span-2">
           <div class="sport-card">
-            <div class="mb-6">
-              <h2 class="text-2xl font-bold text-sport-800 mb-2">Informations du profil</h2>
-              <p class="text-sport-600">Gérez vos informations personnelles</p>
+            <div class="mb-8">
+              <h2 class="text-2xl font-bold text-sport-800 mb-2">Informations personnelles</h2>
+              <p class="text-sport-600">Vos données de profil et coordonnées</p>
             </div>
 
-            <div class="space-y-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
-                  <label class="block text-sm font-semibold text-sport-700 mb-2">Nom</label>
-                  <p class="text-lg text-sport-800">{{ authStore.user?.name }}</p>
+            <div class="space-y-4">
+              <!-- Informations principales -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 bg-white/60 rounded-lg border border-sport-200/50">
+                  <label class="block text-xs font-semibold text-sport-600 mb-1">Nom complet</label>
+                  <p class="text-sport-800 break-words">
+                    {{ authStore.user?.first_name }} {{ authStore.user?.last_name }}
+                  </p>
                 </div>
-                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
-                  <label class="block text-sm font-semibold text-sport-700 mb-2">Email</label>
-                  <p class="text-lg text-sport-800">{{ authStore.user?.email }}</p>
+                
+                <div class="p-4 bg-white/60 rounded-lg border border-sport-200/50">
+                  <label class="block text-xs font-semibold text-sport-600 mb-1">Email</label>
+                  <p class="text-sport-800 break-all text-sm">
+                    {{ authStore.user?.email }}
+                  </p>
                 </div>
               </div>
 
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
-                  <label class="block text-sm font-semibold text-sport-700 mb-2">Membre depuis</label>
-                  <p class="text-lg text-sport-800">{{ formatDate(authStore.user?.created_at) }}</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 bg-white/60 rounded-lg border border-sport-200/50">
+                  <label class="block text-xs font-semibold text-sport-600 mb-1">Téléphone</label>
+                  <p class="text-sport-800">
+                    {{ authStore.user?.phone || 'Non renseigné' }}
+                  </p>
                 </div>
-                <div class="p-4 bg-white/60 rounded-xl border border-sport-200/50">
-                  <label class="block text-sm font-semibold text-sport-700 mb-2">Dernière mise à jour</label>
-                  <p class="text-lg text-sport-800">{{ formatDate(authStore.user?.updated_at) }}</p>
+                
+                <div class="p-4 bg-white/60 rounded-lg border border-sport-200/50">
+                  <label class="block text-xs font-semibold text-sport-600 mb-1">Date de naissance</label>
+                  <p class="text-sport-800">
+                    {{ formatDate(authStore.user?.date_of_birth) }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Informations de compte -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-sport-200/50">
+                <div class="p-3 bg-sport-50/50 rounded-lg">
+                  <label class="block text-xs font-semibold text-sport-600 mb-1">Membre depuis</label>
+                  <p class="text-sport-800 text-sm">
+                    {{ formatDate(authStore.user?.created_at) }}
+                  </p>
+                </div>
+                <div class="p-3 bg-sport-50/50 rounded-lg">
+                  <label class="block text-xs font-semibold text-sport-600 mb-1">Dernière mise à jour</label>
+                  <p class="text-sport-800 text-sm">
+                    {{ formatDate(authStore.user?.updated_at) }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -90,12 +117,16 @@ import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.vue';
 const authStore = useAuthStore();
 
 const formatDate = (dateString?: string) => {
-  if (!dateString) return 'N/A';
-  return new Date(dateString).toLocaleDateString('fr-FR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  if (!dateString) return 'Non renseigné';
+  try {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  } catch (error) {
+    return 'Date invalide';
+  }
 };
 
 const handleEditProfile = () => {
