@@ -6,6 +6,8 @@ export interface Club {
   description?: string;
   location: string;
   members_count?: number;
+  role?: string;
+  joined_at?: string;
   created_at: string;
   updated_at: string;
 }
@@ -25,6 +27,11 @@ export interface UpdateClubData {
 export const clubApi = {
   async getAll() {
     const response = await api.get('/api/clubs');
+    return response.data;
+  },
+
+  async getUserClubs() {
+    const response = await api.get('/api/user/clubs');
     return response.data;
   },
 

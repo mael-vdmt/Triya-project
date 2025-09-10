@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { clubApi, type Club, type CreateClubData, type UpdateClubData } from '../api/club';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from './auth';
 
 export const useClubStore = defineStore('club', () => {
   const clubs = ref<Club[]>([]);
   const currentClub = ref<Club | null>(null);
+  const selectedClubId = ref<number | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
 
@@ -39,6 +39,30 @@ export const useClubStore = defineStore('club', () => {
     }
   };
 
+  const getUserClubs = async () => {
+    try {
+      setLoading(true);
+      clearError();
+      
+      const response = await clubApi.getUserClubs();
+      clubs.value = response.data;
+      
+      // Sélectionner le premier club par défaut si aucun n'est sélectionné
+      if (clubs.value.length > 0 && !selectedClubId.value) {
+        selectedClubId.value = clubs.value[0].id;
+        currentClub.value = clubs.value[0];
+      }
+      
+      return response.data;
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || 'Erreur lors de la récupération des clubs de l\'utilisateur';
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createClub = async (clubData: CreateClubData) => {
     try {
       setLoading(true);
@@ -49,6 +73,10 @@ export const useClubStore = defineStore('club', () => {
       
       // Ajouter le nouveau club à la liste
       clubs.value.push(newClub);
+      
+      // Sélectionner automatiquement le nouveau club
+      selectedClubId.value = newClub.id;
+      currentClub.value = newClub;
       
       // Mettre à jour manuellement le statut has_clubs de l'utilisateur
       const authStore = useAuthStore();
@@ -186,15 +214,25 @@ export const useClubStore = defineStore('club', () => {
     }
   };
 
+  const selectClub = (clubId: number) => {
+    const club = clubs.value.find(c => c.id === clubId);
+    if (club) {
+      selectedClubId.value = clubId;
+      currentClub.value = club;
+    }
+  };
+
   return {
     clubs,
     currentClub,
+    selectedClubId,
     loading,
     error,
     setError,
     clearError,
     setLoading,
     getAllClubs,
+    getUserClubs,
     createClub,
     getClubById,
     updateClub,
@@ -202,5 +240,6 @@ export const useClubStore = defineStore('club', () => {
     getClubMembers,
     addMember,
     removeMember,
+    selectClub,
   };
 });

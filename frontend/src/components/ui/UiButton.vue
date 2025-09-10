@@ -12,9 +12,9 @@
       </svg>
       {{ loadingText }}
     </div>
-    <span v-else>
+    <div v-else class="flex items-center justify-center">
       <slot />
-    </span>
+    </div>
   </button>
 </template>
 

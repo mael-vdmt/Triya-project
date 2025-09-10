@@ -30,6 +30,18 @@ class EventResource extends JsonResource
             ],
             'formats' => EventFormatResource::collection($this->whenLoaded('formats')),
             'registrations_count' => $this->when(isset($this->registrations_count), $this->registrations_count),
+            'registered_users' => $this->when($this->relationLoaded('users'), function () {
+                return $this->users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'first_name' => $user->first_name,
+                        'last_name' => $user->last_name,
+                        'email' => $user->email,
+                        'status' => $user->pivot->status,
+                        'registered_at' => $user->pivot->registered_at,
+                    ];
+                });
+            }),
             'carpooling_count' => $this->when(isset($this->carpooling_count), $this->carpooling_count),
             'accommodation_count' => $this->when(isset($this->accommodation_count), $this->accommodation_count),
             'created_at' => $this->created_at,

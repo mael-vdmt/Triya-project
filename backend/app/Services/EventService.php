@@ -13,26 +13,26 @@ class EventService implements ServiceInterface
 {
     public function getAll()
     {
-        return Event::with(['club', 'creator', 'formats'])->get();
+        return Event::with(['club', 'creator', 'formats', 'users'])->get();
     }
 
     public function find(int $id)
     {
-        return Event::with(['club', 'creator', 'formats', 'registrations.user', 'carpooling.user', 'accommodation.user'])
+        return Event::with(['club', 'creator', 'formats', 'users', 'registrations.user', 'carpooling.user', 'accommodation.user'])
                     ->findOrFail($id);
     }
 
     public function create(array $data)
     {
         $event = Event::create($data);
-        return $event->load(['club', 'creator', 'formats']);
+        return $event->load(['club', 'creator', 'formats', 'users']);
     }
 
     public function update(int $id, array $data)
     {
         $event = $this->find($id);
         $event->update($data);
-        return $event->fresh()->load(['club', 'creator', 'formats']);
+        return $event->fresh()->load(['club', 'creator', 'formats', 'users']);
     }
 
     public function delete(int $id)
@@ -47,7 +47,7 @@ class EventService implements ServiceInterface
     public function getClubEvents(int $clubId): Collection
     {
         return Event::where('club_id', $clubId)
-                    ->with(['club', 'creator', 'formats'])
+                    ->with(['club', 'creator', 'formats', 'users'])
                     ->get();
     }
 
@@ -59,7 +59,7 @@ class EventService implements ServiceInterface
         return Event::where('title', 'like', "%{$query}%")
                    ->orWhere('description', 'like', "%{$query}%")
                    ->orWhere('location', 'like', "%{$query}%")
-                   ->with(['club', 'creator', 'formats'])
+                   ->with(['club', 'creator', 'formats', 'users'])
                    ->get();
     }
 

@@ -91,20 +91,16 @@ class UserController extends Controller
         $user = $request->user();
         $clubs = $this->userService->getUserClubs($user->id);
         
+        $clubsWithRoles = $clubs->map(function ($club) use ($request) {
+            $clubData = (new ClubResource($club))->toArray($request);
+            return array_merge($clubData, [
+                'role' => $club->pivot->role,
+                'joined_at' => $club->pivot->joined_at,
+            ]);
+        });
+        
         return response()->json([
-            'data' => ClubResource::collection($clubs),
-            'clubs_with_roles' => $clubs->map(function ($club) {
-                return [
-                    'id' => $club->id,
-                    'name' => $club->name,
-                    'description' => $club->description,
-                    'location' => $club->location,
-                    'role' => $club->pivot->role,
-                    'joined_at' => $club->pivot->joined_at,
-                    'created_at' => $club->created_at,
-                    'updated_at' => $club->updated_at,
-                ];
-            })
+            'data' => $clubsWithRoles
         ]);
     }
 }
